@@ -3,6 +3,7 @@ import Calendar from './components/Calendar'
 import EventModal from './components/EventModal'
 import { loadEventsFromStorage, saveEventsToStorage } from './utils/storage'
 import { exportEventsAsICS, importICSEventsFromText, importICSEventsFromURL } from './utils/ics'
+import { Capacitor } from '@capacitor/core'
 
 export default function App() {
   const [events, setEvents] = useState(() => loadEventsFromStorage())
@@ -10,6 +11,7 @@ export default function App() {
   const [selectedDate, setSelectedDate] = useState(new Date())
   const [modalEvent, setModalEvent] = useState(null)
   const reminderTimersRef = useRef({})
+  const [isNative, setIsNative] = useState(false)
 
   useEffect(() => {
     saveEventsToStorage(events)
@@ -20,6 +22,15 @@ export default function App() {
     // request notification permission
     if ('Notification' in window && Notification.permission !== 'granted') {
       Notification.requestPermission()
+    }
+  }, [])
+
+  useEffect(() => {
+    // detect Capacitor native runtime (if present)
+    try {
+      setIsNative(Capacitor.getPlatform && Capacitor.getPlatform() !== 'web')
+    } catch (e) {
+      setIsNative(false)
     }
   }, [])
 
@@ -90,7 +101,7 @@ export default function App() {
   return (
     <div className="app">
       <header>
-        <h1>Calendar App</h1>
+        <h1>Calendar App {isNative ? <span className="badge">Native</span> : <span className="badge">Web</span>}</h1>
         <div className="controls">
           <select value={view} onChange={e => setView(e.target.value)}>
             <option value="month">Month</option>

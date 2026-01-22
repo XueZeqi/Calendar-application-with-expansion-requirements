@@ -1,0 +1,6 @@
+{
+  "appId": "com.xueyujun.calendar",
+  "appName": "Calendar App",
+  "webDir": "dist",
+  "bundledWebRuntime": false
+}
