@@ -5,7 +5,7 @@
 快速运行：
 
 ```bash
-cd /Users/xueyujun/Calendar-application-with-expansion-requirements
+cd calendar-application-with-expansion-requirements
 npm install
 npm run dev
 ```
